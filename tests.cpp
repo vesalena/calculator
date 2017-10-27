@@ -58,6 +58,20 @@ TEST_CASE("Lexeme types be calculated correctly") {
 	token.c = Empty;
 	get_token(s9, token);
 	REQUIRE(token.type == Rbracket);
+
+	std::stringstream s10;
+	s10 << "";
+	token.c = Empty;
+	get_token(s, token);
+	REQUIRE(token.type == Eof);
+
+	std::stringstream s11;
+	s11 << "12 +";
+	token.c = Empty;
+	get_token(s11, token);
+	REQUIRE(token.type == Number);
+	get_token(s11, token);
+	REQUIRE(token.type == Plus);
 }
 
 TEST_CASE("Incorrect lexeme must be detected") {
@@ -177,4 +191,14 @@ TEST_CASE("Test of plusminus() function") {
 	s5 << "(3 +4)";
 	token.c = Empty;
 	REQUIRE(plusminus(s5, token, true) == 7);
+
+	std::stringstream s6;
+	s6 << "10000000 - 0.01";
+	token.c = Empty;
+	REQUIRE(plusminus(s6, token, true) == 9999999.99);
+
+	std::stringstream s7;
+	s7 << "1 + (-4)";
+	token.c = Empty;
+	REQUIRE(plusminus(s7, token, true) == -3);
 }
